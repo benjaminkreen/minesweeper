@@ -3,13 +3,18 @@ require_relative 'board'
 class Minesweeper
 
 
-  def initialize(board)
+  def initialize(board, player)
 
 
 
   end
 
+  def play
+  end
+
+
 end
 
 # board = Board.new(size, bombs)
-# game = Minesweeper.new(board)
+# player = Player.new
+# game = Minesweeper.new(board, player)

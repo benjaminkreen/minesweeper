@@ -59,7 +59,7 @@ class Board
 
   def print_board
     @board.each do |row|
-      p row.map {|x| [x.num_adj_bombs, x.bomb]}
+      p row.map {|x| '*' unless x.reveal}
     end
   end
 
