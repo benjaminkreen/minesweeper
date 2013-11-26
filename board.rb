@@ -40,30 +40,40 @@ class Board
   def neighboring_bomb_count(board)
     board.each_with_index do |row, i|
       row.each_with_index do |tile, j|
-        #neighboring_bomb_count = 0
         NEIGHBORS.each do |neighbor|
           x, y = (i + neighbor[0]), (j + neighbor[1])
           if valid_pos?(x) && valid_pos?(y)
             tile.num_adj_bombs += 1 if @board[x][y].bomb
           end
 
-          #next if
-
-          #(i + neighbor.last < 0) || (i + neighbor.last > (@size - 1)) || (j + neighbor.first < 0) || (j + neighbor.first > (@size - 1))
-
-          # tile.num_adj_bombs += 1 if board[i + neighbor.first][j + neighbor.last].bomb
         end
       end
     end
   end
+  #
+
+  def reveal(coord)
+    @board[coord[0]][coord[1]].reveal = true
+    NEIGHBORS.each do |neighbor|
+      x, y = (coord[0] + neighbor[0]), (coord[1] + neighbor[1])
+      if valid_pos?(x) && valid_pos?(y)
+        @board[x][y].reveal = true
+        reveal([x, y]) if @board[x][y].num_adj_bombs == 0
+        next
+      end
+    end
+  end
+
+
 
   def print_board
     @board.each do |row|
-      p row.map {|x| '*' unless x.reveal}
+      p row.map {|x| [x.num_adj_bombs, x.bomb, x.reveal] }
     end
   end
 
 end
 
 board = Board.new(5, 3)
+board.reveal([2,3])
 board.print_board
