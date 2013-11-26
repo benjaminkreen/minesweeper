@@ -45,21 +45,25 @@ class Board
           if valid_pos?(x) && valid_pos?(y)
             tile.num_adj_bombs += 1 if @board[x][y].bomb
           end
-
         end
       end
     end
   end
-  #
+
 
   def reveal(coord)
     @board[coord[0]][coord[1]].reveal = true
+    sorted = false
+    until sorted
+      sorted = true
     NEIGHBORS.each do |neighbor|
       x, y = (coord[0] + neighbor[0]), (coord[1] + neighbor[1])
       if valid_pos?(x) && valid_pos?(y)
         @board[x][y].reveal = true
-        reveal([x, y]) if @board[x][y].num_adj_bombs == 0
-        next
+        sorted = false
+      end
+        # reveal([x, y]) if @board[x][y].num_adj_bombs == 0
+        # return
       end
     end
   end
@@ -68,12 +72,12 @@ class Board
 
   def print_board
     @board.each do |row|
-      p row.map {|x| [x.num_adj_bombs, x.bomb, x.reveal] }
+      p row.map {|x| [x.num_adj_bombs, "bomb #{x.bomb}", x.reveal] }
     end
   end
 
 end
 
 board = Board.new(5, 3)
-board.reveal([2,3])
+board.reveal([0,0])
 board.print_board
